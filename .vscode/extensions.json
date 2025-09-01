@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        // formatter
+        "esbenp.prettier-vscode",
+        // Golang support
+        "golang.go",
+        // IDE file explorer style
+        "vscode-icons-team.vscode-icons"
+    ]
+}
