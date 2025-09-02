@@ -9,5 +9,5 @@ func main() {
 		c.JSON(200, "pong")
 	})
 	router.GET("/subreddits", QuerySubredditsEndpoint)
-	router.Run()
+	router.Run(":9361")
 }
