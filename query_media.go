@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -58,6 +59,8 @@ type mediaQueryResponse struct {
 			Data postResponse
 		}
 	}
+	Message string
+	Error int
 }
 
 type postResponse struct {
@@ -136,6 +139,9 @@ func getMediaList(body []byte) (s mediaList, e error) {
 	if err != nil {
 		log.Printf("Error parsing media list: %s", err)
 		return mediaList{nil, ""}, err
+	}
+	if response.Message != "" {
+		return mediaList{nil, ""}, errors.New(response.Message)
 	}
 	var media []media
 	for _, post := range response.Data.Children {

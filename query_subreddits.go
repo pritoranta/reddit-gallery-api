@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -53,6 +54,8 @@ type subredditQueryResponse struct {
 			}
 		}
 	}
+	Message string
+	Error int
 }
 
 func querySubreddits(query subredditQuery) (s []subreddit, e error) {
@@ -86,6 +89,9 @@ func getSubreddits(body []byte) (s []subreddit, e error) {
 	if err != nil {
 		log.Printf("Error parsing subreddits: %s", err)
 		return nil, err
+	}
+	if response.Message != "" {
+		return nil, errors.New(response.Message)
 	}
 	var subreddits []subreddit
 	for _, sub := range response.Data.Children {
