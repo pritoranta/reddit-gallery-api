@@ -19,6 +19,7 @@ func QuerySubredditsEndpoint(c *gin.Context) {
 		c.JSON(400, err.Error())
 		return
 	}
+	log.Printf("Querying subreddits with query %v\n", query)
 	subreddits, err := querySubreddits(query)
 	if err == nil {
 		c.JSON(200, subreddits)
@@ -55,7 +56,6 @@ type subredditQueryResponse struct {
 }
 
 func querySubreddits(query subredditQuery) (s []subreddit, e error) {
-	log.Printf("Querying subreddits with query %v\n", query)
 	res, err := http.Get(getUrl(query))
 	if err != nil {
 		log.Printf("Error sending HTTP request: %s", err)
