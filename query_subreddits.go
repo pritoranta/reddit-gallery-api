@@ -19,7 +19,7 @@ func QuerySubredditsEndpoint(c *gin.Context) {
 		c.JSON(400, err.Error())
 		return
 	}
-	log.Printf("Querying subreddits with query %v\n", query)
+	log.Printf("Querying subreddits with query %v", query)
 	subreddits, err := querySubreddits(query)
 	if err == nil {
 		c.JSON(200, subreddits)
