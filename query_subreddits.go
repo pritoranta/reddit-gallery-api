@@ -56,7 +56,7 @@ type subredditQueryResponse struct {
 }
 
 func querySubreddits(query subredditQuery) (s []subreddit, e error) {
-	res, err := http.Get(getUrl(query))
+	res, err := http.Get(getSubredditQueryUrl(query))
 	if err != nil {
 		log.Printf("Error sending HTTP request: %s", err)
 		return nil, err
@@ -70,7 +70,7 @@ func querySubreddits(query subredditQuery) (s []subreddit, e error) {
 	return getSubreddits(body)
 }
 
-func getUrl(query subredditQuery) string {
+func getSubredditQueryUrl(query subredditQuery) string {
 	paddedSearchPhrase := url.QueryEscape(fmt.Sprintf("%3s", query.SearchPhrase)) // Reddit wants this to be at least 3 long
 	over18QueryParam := "&include_over_18=off"
 	if (query.ShouldIncludeOver18) {

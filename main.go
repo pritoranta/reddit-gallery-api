@@ -15,5 +15,6 @@ func main() {
 		c.JSON(200, "pong")
 	})
 	router.GET("/subreddits", QuerySubredditsEndpoint)
+	router.GET("/media", QueryMediaEndpoint)
 	router.Run(":9361")
 }
