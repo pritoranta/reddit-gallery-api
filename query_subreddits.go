@@ -20,10 +20,10 @@ func QuerySubredditsEndpoint(c *gin.Context) {
 		return
 	}
 	subreddits, err := querySubreddits(query)
-	if err != nil {
-		c.JSON(500, err.Error())
-	} else {
+	if err == nil {
 		c.JSON(200, subreddits)
+	} else {
+		c.JSON(500,  err.Error())
 	}
 }
 
