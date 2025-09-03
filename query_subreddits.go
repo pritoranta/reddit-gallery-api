@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"net/url"
 
 	"github.com/gin-gonic/gin"
@@ -59,7 +58,7 @@ type subredditQueryResponse struct {
 }
 
 func querySubreddits(query subredditQuery) (s []subreddit, e error) {
-	res, err := http.Get(getSubredditQueryUrl(query))
+	res, err := HttpClient.Get(getSubredditQueryUrl(query))
 	if err != nil {
 		log.Printf("Error sending HTTP request: %s", err)
 		return nil, err

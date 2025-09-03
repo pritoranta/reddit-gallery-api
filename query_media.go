@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"reflect"
 	"strings"
 
@@ -109,7 +108,7 @@ type postResponse struct {
 }
 
 func queryMedia(query mediaQuery) (m mediaList, e error) {
-	res, err := http.Get(getMediaQueryUrl(query))
+	res, err := HttpClient.Get(getMediaQueryUrl(query))
 	if err != nil {
 		log.Printf("Error sending HTTP request: %s", err)
 		return mediaList{nil, ""}, err
