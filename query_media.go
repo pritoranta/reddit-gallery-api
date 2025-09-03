@@ -29,84 +29,6 @@ func QueryMediaEndpoint(c *gin.Context) {
 	}
 }
 
-type mediaQuery struct {
-	SubredditId string	`form:"subredditId" binding:"required"`
-	PageId string		`form:"pageId"`
-}
-
-type media struct {
-	PostPermalink string	`json:"postPermalink"`
-	SubredditId string		`json:"subredditId"`
-	PostTitle string		`json:"postTitle"`
-	Url string				`json:"url"`
-	Height int				`json:"height"`
-	Width int				`json:"width"`
-	IsOver18 bool			`json:"isOver18"`
-	IsVideo bool			`json:"isVideo"`
-	ThumbnailUrl string		`json:"thumbnailUrl"`
-}
-
-type mediaList struct {
-	Media []media		`json:"media"`
-	NextPageId string	`json:"nextPageId"`
-}
-
-type mediaQueryResponse struct {
-	Data struct {
-		After string
-		Children []struct {
-			Data postResponse
-		}
-	}
-	Message string
-	Error int
-}
-
-type postResponse struct {
-	Preview struct {
-		Images []struct {
-			Source struct {
-				Url string
-				Height int
-				Width int
-			}
-		}
-		Reddit_video_preview struct {
-			Bitrate_kbps int
-			Duration int
-			Fallback_url string
-			Height int
-			Width int
-		}
-	}
-	Secure_media struct {
-		Type string
-		Oembed struct {
-			Thumbnail_url string
-			Type string
-			Height int
-			Width int
-		}
-		Reddit_video struct {
-			Fallback_url string
-			Height int
-			Width int
-		}
-	}
-	Secure_media_embed struct {
-		Media_domain_url string
-		Height int
-		Width int
-	}
-	Post_hint string
-	Permalink string
-	Url string
-	Subreddit string
-	Title string
-	Thumbnail string
-	Over_18 bool		
-}
-
 func queryMedia(query mediaQuery) (m mediaList, e error) {
 	res, err := HttpClient.Get(getMediaQueryUrl(query))
 	if err != nil {
@@ -207,4 +129,82 @@ func getMedia(post postResponse) media {
 			ThumbnailUrl: "",
 		}
 	}
+}
+
+type mediaQuery struct {
+	SubredditId string	`form:"subredditId" binding:"required"`
+	PageId string		`form:"pageId"`
+}
+
+type media struct {
+	PostPermalink string	`json:"postPermalink"`
+	SubredditId string		`json:"subredditId"`
+	PostTitle string		`json:"postTitle"`
+	Url string				`json:"url"`
+	Height int				`json:"height"`
+	Width int				`json:"width"`
+	IsOver18 bool			`json:"isOver18"`
+	IsVideo bool			`json:"isVideo"`
+	ThumbnailUrl string		`json:"thumbnailUrl"`
+}
+
+type mediaList struct {
+	Media []media		`json:"media"`
+	NextPageId string	`json:"nextPageId"`
+}
+
+type mediaQueryResponse struct {
+	Data struct {
+		After string
+		Children []struct {
+			Data postResponse
+		}
+	}
+	Message string
+	Error int
+}
+
+type postResponse struct {
+	Preview struct {
+		Images []struct {
+			Source struct {
+				Url string
+				Height int
+				Width int
+			}
+		}
+		Reddit_video_preview struct {
+			Bitrate_kbps int
+			Duration int
+			Fallback_url string
+			Height int
+			Width int
+		}
+	}
+	Secure_media struct {
+		Type string
+		Oembed struct {
+			Thumbnail_url string
+			Type string
+			Height int
+			Width int
+		}
+		Reddit_video struct {
+			Fallback_url string
+			Height int
+			Width int
+		}
+	}
+	Secure_media_embed struct {
+		Media_domain_url string
+		Height int
+		Width int
+	}
+	Post_hint string
+	Permalink string
+	Url string
+	Subreddit string
+	Title string
+	Thumbnail string
+	Over_18 bool		
 }

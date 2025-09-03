@@ -28,35 +28,6 @@ func QuerySubredditsEndpoint(c *gin.Context) {
 	}
 }
 
-type subredditQuery struct {
-	SearchPhrase string			`form:"searchPhrase" binding:"required"`
-	ShouldIncludeOver18 bool	`form:"shouldIncludeOver18" default:"false"`
-}
-
-type subreddit struct {
-	Id string			`json:"id" validate:"required"`
-	IsOver18 bool		`json:"isOver18"`
-}
-
-type subredditQueryResponse struct {
-	Data struct {
-		Children []struct {
-			Kind string
-			Data struct {
-				Display_name string
-				Display_name_prefixed string
-				Id string
-				Name string
-				Public_description string
-				Subreddit_type string
-				Over18 bool
-			}
-		}
-	}
-	Message string
-	Error int
-}
-
 func querySubreddits(query subredditQuery) (s []subreddit, e error) {
 	res, err := HttpClient.Get(getSubredditQueryUrl(query))
 	if err != nil {
@@ -100,4 +71,33 @@ func getSubreddits(body []byte) (s []subreddit, e error) {
 		})
 	}
 	return subreddits, nil
+}
+
+type subredditQuery struct {
+	SearchPhrase string			`form:"searchPhrase" binding:"required"`
+	ShouldIncludeOver18 bool	`form:"shouldIncludeOver18" default:"false"`
+}
+
+type subreddit struct {
+	Id string			`json:"id" validate:"required"`
+	IsOver18 bool		`json:"isOver18"`
+}
+
+type subredditQueryResponse struct {
+	Data struct {
+		Children []struct {
+			Kind string
+			Data struct {
+				Display_name string
+				Display_name_prefixed string
+				Id string
+				Name string
+				Public_description string
+				Subreddit_type string
+				Over18 bool
+			}
+		}
+	}
+	Message string
+	Error int
 }
