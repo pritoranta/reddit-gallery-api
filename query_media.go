@@ -33,14 +33,14 @@ func queryMedia(query mediaQuery) (m mediaList, e error) {
 	res, err := HttpClient.Get(getMediaQueryUrl(query))
 	if err != nil {
 		log.Printf("Error sending HTTP request: %s", err)
-		return mediaList{nil, ""}, err
+		return mediaList{}, err
 	}
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
 	fmt.Println(string(body))
 	if err != nil {
 		log.Printf("Error reading HTTP response: %s", err)
-		return mediaList{nil, ""}, err
+		return mediaList{}, err
 	}
 	return getMediaList(body)
 }
@@ -59,10 +59,10 @@ func getMediaList(body []byte) (s mediaList, e error) {
 	err := json.Unmarshal(body, &response)
 	if err != nil {
 		log.Printf("Error parsing media list: %s", err)
-		return mediaList{nil, ""}, err
+		return mediaList{}, err
 	}
 	if response.Message != "" {
-		return mediaList{nil, ""}, errors.New(response.Message)
+		return mediaList{}, errors.New(response.Message)
 	}
 	var media []media
 	for _, post := range response.Data.Children {
