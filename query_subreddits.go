@@ -20,12 +20,27 @@ func QuerySubredditsEndpoint(c *gin.Context) {
 		return
 	}
 	log.Printf("Querying subreddits with query %v", query)
-	subreddits, err := querySubreddits(query)
+	subreddits, err := cacheSubreddits(query)
 	if err == nil {
 		c.JSON(200, subreddits)
 	} else {
 		c.JSON(500,  err.Error())
 	}
+}
+
+func cacheSubreddits(q subredditQuery) (s []subreddit, e error) {
+	cached, found := getCachedSubreddits(q)
+	if found {
+		log.Printf("Subreddit cache hit %+v", q)
+		return cached, nil
+	}
+	log.Printf("Subreddit cache miss %+v", q)
+	s, err := querySubreddits(q)
+	if err != nil {
+		return nil, err
+	}
+	setSubredditsToCache(q, s)
+	return s, nil
 }
 
 func querySubreddits(query subredditQuery) (s []subreddit, e error) {

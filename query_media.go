@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"reflect"
@@ -21,12 +20,27 @@ func QueryMediaEndpoint(c *gin.Context) {
 		return
 	}
 	log.Printf("Querying media with query %v", query)
-	media, err := queryMedia(query)
+	media, err := cacheMedia(query)
 	if err == nil {
 		c.JSON(200, media)
 	} else {
 		c.JSON(500, err.Error())
 	}
+}
+
+func cacheMedia(q mediaQuery) (m mediaList, e error) {
+	cached, found := getCachedMedia(q)
+	if found {
+		log.Printf("Media cache hit %+v", q)
+		return cached, nil
+	}
+	log.Printf("Media cache miss %+v", q)
+	m, err := queryMedia(q)
+	if err != nil {
+		return mediaList{}, err
+	}
+	setMediaToCache(q, m)
+	return m, nil
 }
 
 func queryMedia(query mediaQuery) (m mediaList, e error) {
@@ -37,7 +51,6 @@ func queryMedia(query mediaQuery) (m mediaList, e error) {
 	}
 	defer res.Body.Close()
 	body, err := io.ReadAll(res.Body)
-	fmt.Println(string(body))
 	if err != nil {
 		log.Printf("Error reading HTTP response: %s", err)
 		return mediaList{}, err
