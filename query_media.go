@@ -20,7 +20,7 @@ func QueryMediaEndpoint(c *gin.Context) {
 		return
 	}
 	log.Printf("Querying media with query %v", query)
-	media, err := cacheMedia(query)
+	media, err := queryMediaCachedAside(query)
 	if err == nil {
 		c.JSON(200, media)
 	} else {
@@ -28,7 +28,7 @@ func QueryMediaEndpoint(c *gin.Context) {
 	}
 }
 
-func cacheMedia(q mediaQuery) (m mediaList, e error) {
+func queryMediaCachedAside(q mediaQuery) (m mediaList, e error) {
 	cached, found := getCachedMedia(q)
 	if found {
 		log.Printf("Media cache hit %+v", q)
