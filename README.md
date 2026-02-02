@@ -4,11 +4,11 @@ Minimal Go [Gin](https://gin-gonic.com/) HTTP API for using Reddit API indirectl
 
 I decided to use Go because this project seemed like an ideal candidate; small and simple. It's my first go at Go, after years of .NET and JS. I love the tools and ease of build and deployment processes, but the language is certainly quirky.
 
-[Ping the hosted instance](https://pritoranta.net/reddit-gallery-api/ping)
+[Ping the hosted instance](https://pritoranta.com/reddit-gallery-api/ping)
 
 ## Architecture
 
-![Architecture graph. The graph illustrates how Reddit Gallery Client and Reddit Gallery API are both inside the pritoranta.net network.](./docs/architecture.png)
+![Architecture graph. The graph illustrates how Reddit Gallery Client and Reddit Gallery API are both inside the pritoranta.com network.](./docs/architecture.png)
 
 1. Client device fetches the Svelte web UI.
 2. UI fetches data from the Gin HTTP API. CORS allows this (unlike direct Reddit API requests), since the UI and API are hosted in the same domain.
